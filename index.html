@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise Timer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        #timer {
+            font-size: 3em;
+            margin: 20px;
+        }
+        .controls {
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Exercise Timer</h1>
+
+    <div id="timer">00:00</div>
+
+    <div class="controls">
+        <label for="duration">Set Duration (seconds): </label>
+        <input type="number" id="duration" min="1" placeholder="e.g., 30">
+    </div>
+
+    <div class="controls">
+        <label for="sound">Select Sound: </label>
+        <select id="sound">
+            <option value="beep">Beep</option>
+            <option value="buzz">Buzz</option>
+            <option value="chime">Chime</option>
+        </select>
+    </div>
+
+    <button onclick="startTimer()">Start</button>
+
+    <script>
+        let interval;
+        const timerDisplay = document.getElementById('timer');
+
+        function startTimer() {
+            clearInterval(interval); 
+            const duration = document.getElementById('duration').value;
+            let timeLeft = duration;
+
+            interval = setInterval(() => {
+                if (timeLeft > 0) {
+                    timeLeft--;
+                    timerDisplay.textContent = formatTime(timeLeft);
+                } else {
+                    clearInterval(interval);
+                    playSound();
+                }
+            }, 1000);
+        }
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        function playSound() {
+            const sound = document.getElementById('sound').value;
+            const audio = new Audio(`${sound}.mp3`);
+            audio.play();
+        }
+    </script>
+
+</body>
+</html>
